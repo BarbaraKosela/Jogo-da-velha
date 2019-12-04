@@ -10,27 +10,26 @@ namespace VetorEMatriz
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Início");
+            Console.WriteLine("Início\n");
 
             string[,] campos;
             campos = new string[3, 3];
 
-            // X X O
-            // X O O
             // O X X
+            // X X O
+            // O O O
 
-            campos[0, 0] = "X";
+            campos[0, 0] = "O";
             campos[0, 1] = "X";
             campos[0, 2] = "X";
 
             campos[1, 0] = "X";
-            campos[1, 1] = "O";
+            campos[1, 1] = "X";
             campos[1, 2] = "O";
 
             campos[2, 0] = "O";
-            campos[2, 1] = "X";
-            campos[2, 2] = "X";
-
+            campos[2, 1] = "O";
+            campos[2, 2] = "O";
 
             bool houveVencedorNaHorizontal = ProcurarHorizontal(campos);
             bool houveVencedorNaVertical = ProcurarVertical(campos);
@@ -45,39 +44,29 @@ namespace VetorEMatriz
             else
                 Console.WriteLine("Não houve vencedor");
 
-            Console.WriteLine("Fim");
+            Console.WriteLine("\nFim");
             Console.ReadLine();
         }
         static bool ProcurarHorizontal(string[,] vetor)
         {
             string resultadoX = "";
             string resultadoO = "";
-            for (int horiz = 0; horiz < 3; horiz++)
+            foreach (string campos in vetor)
             {
-                for (int outroHoriz = 0; outroHoriz < 3; outroHoriz++)
+                if (campos == "X")
                 {
-                    var linhaHorizontal = vetor[horiz, outroHoriz];
-                    if (linhaHorizontal == "X")
-                    {
-                        resultadoX = linhaHorizontal + resultadoX;
-                        if (resultadoX == "XXX")
-                        {
-                            Console.WriteLine($"Linha Horizontal: {resultadoX}");
-                            return true;
-                        }
-                    }
-                    else if (linhaHorizontal == "O")
-                    {
-                        resultadoO = linhaHorizontal + resultadoO;
-                        if (resultadoO == "OOO")
-                        {
-                            Console.WriteLine($"Linha Horizontal: {resultadoO}");
-                            return true;
-                        }
-                    }
+                    resultadoX = campos + resultadoX;
+
+                    if (resultadoX == "XXX")
+                        return true;
                 }
-                resultadoX = "";
-                resultadoO = "";
+                else if (campos == "O")
+                {
+                    resultadoO = campos + resultadoO;
+                   
+                    if (resultadoO == "OOO")
+                        return true;
+                }
             }
             return false;
         }
@@ -89,24 +78,18 @@ namespace VetorEMatriz
             {
                 for (int outroVert = 0; outroVert < 3; outroVert++)
                 {
-                    var linhaVertical = vetor[outroVert, vert];
+                    string linhaVertical = vetor[outroVert, vert];
                     if (linhaVertical == "X")
                     {
                         resultadoX = linhaVertical + resultadoX;
                         if (resultadoX == "XXX")
-                        {
-                            Console.WriteLine($"Linha Vertical: {resultadoX}");
                             return true;
-                        }
                     }
                     else if (linhaVertical == "O")
                     {
                         resultadoO = linhaVertical + resultadoO;
                         if (resultadoO == "OOO")
-                        {
-                            Console.WriteLine($"Linha Vertical: {resultadoO}");
                             return true;
-                        }
                     }
                 }
                 resultadoX = "";
@@ -116,7 +99,19 @@ namespace VetorEMatriz
         }
         static bool ProcurarDiagonal(string[,] vetor)
         {
-            return false;
+            bool haVencedorDiagonal = false;
+            while (!haVencedorDiagonal)
+            {
+                if (vetor[0, 0] == "X" && vetor[1, 1] == "X" && vetor[2, 2] == "X" ||
+                    vetor[0, 0] == "O" && vetor[1, 1] == "O" && vetor[2, 2] == "O")
+                    haVencedorDiagonal = true;
+                else if (vetor[0, 2] == "X" && vetor[1, 1] == "X" && vetor[2, 0] == "X" ||
+                    vetor[0, 2] == "O" && vetor[1, 1] == "O" && vetor[2, 0] == "O")
+                    haVencedorDiagonal = true;
+                else
+                    return false;
+            }
+            return haVencedorDiagonal;
         }
     }
 }
