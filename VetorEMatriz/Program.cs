@@ -17,7 +17,7 @@ namespace VetorEMatriz
 
             // O X X
             // X X O
-            // O O O
+            // O O X
 
             campos[0, 0] = "O";
             campos[0, 1] = "X";
@@ -29,7 +29,7 @@ namespace VetorEMatriz
 
             campos[2, 0] = "O";
             campos[2, 1] = "O";
-            campos[2, 2] = "O";
+            campos[2, 2] = "X";
 
             bool houveVencedorNaHorizontal = ProcurarHorizontal(campos);
             bool houveVencedorNaVertical = ProcurarVertical(campos);
@@ -51,21 +51,28 @@ namespace VetorEMatriz
         {
             string resultadoX = "";
             string resultadoO = "";
+            int contador = 0;
             foreach (string campos in vetor)
             {
+                contador++;
                 if (campos == "X")
                 {
                     resultadoX = campos + resultadoX;
-
                     if (resultadoX == "XXX")
                         return true;
                 }
                 else if (campos == "O")
                 {
                     resultadoO = campos + resultadoO;
-                   
+
                     if (resultadoO == "OOO")
                         return true;
+                }
+                if (contador == 3)
+                {
+                    resultadoX = "";
+                    resultadoO = "";
+                    contador = 0;
                 }
             }
             return false;
